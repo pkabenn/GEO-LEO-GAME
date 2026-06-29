@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Geometry Leo Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="screen">
+        <div class="top-bar">
+            <div class="status">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+                <span id="pointsValue">1,250 pts</span>
+            </div>
+            <a class="icon-button profile-logo-button" href="profile.html" aria-label="โลโก้โปรไฟล์">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M4 21v-2a4 4 0 0 1 3-3.87"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </a>
+        </div>
+
+        <section class="hero">
+            <div class="logo-frame">
+                <div class="logo-symbol"></div>
+            </div>
+            <div class="hero-content">
+                <h1>GEOMETRY <span class="hero-title">LEO GAME</span></h1>
+                <p class="hero-subtitle">ฝึกฝนความแม่นยำผ่านมิติแห่งเรขาคณิต ท้าทายขีดจำกัดของคุณในแต่ละด่าน</p>
+                <a class="start-button" href="#">เริ่มเรียนรู้ต่อเนื่อง 
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+        </section>
+
+        <div class="info-cards">
+            <article class="info-card">
+                <strong>สถานะปัจจุบัน</strong>
+                <div class="progress-row">
+                    <span class="progress-label" id="stageName">ด่าน 1: เบื้องต้น</span>
+                    <span id="progressValue">0%</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+            </article>
+
+            <div class="small-grid">
+                <div class="small-item">
+                    <span>บทเรียนถัดไป</span>
+                    <strong id="nextLessonName">Dot Products</strong>
+                </div>
+                <div class="small-item">
+                    <span>ต่อเนื่อง</span>
+                    <strong id="streakDaysValue">0 วัน</strong>
+                </div>
+            </div>
+
+            <div class="status-block">
+                <a class="status-item status-button" id="skill" href="stages.html">
+                    <strong>ทักษะ</strong>
+                    <span class="hint" id="skillHint">Lorem ipsum dolor sit amet</span>
+                </a>
+                <a class="status-item status-button" id="achievement" href="achievements.html">
+                    <strong>ความสำเร็จ</strong>
+                    <span class="hint" id="achievementHint">Lorem ipsum dolor sit amet</span>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

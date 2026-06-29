@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>โปรไฟล์ - Geometry Leo Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="page-shell profile-shell">
+        <a class="page-back" href="index.html">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 18l-6-6 6-6"/>
+            </svg>
+            กลับสู่หน้าเริ่มต้น
+        </a>
+
+        <section class="profile-banner">
+            <div class="profile-avatar">
+                <div class="avatar-ring">
+                    <div class="avatar-image"></div>
+                </div>
+                <p class="profile-name" id="profileName">สมชาย เรขาคณิต</p>
+                <div class="rank-chip">
+                    <span>RANK: <strong id="profileRank">ผู้เชี่ยวชาญ</strong></span>
+                </div>
+            </div>
+            <div class="profile-meta">
+                <p class="profile-title" id="profileTitle">MASTER OF LOGIC</p>
+            </div>
+            <div class="profile-actions">
+                <a href="#" class="top-button settings-button">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                    </svg>
+                    การตั้งค่า
+                </a>
+            </div>
+        </section>
+
+        <section class="profile-stats">
+            <div class="stat-card stat-card-highlight">
+                <span>คะแนนสะสม</span>
+                <strong id="scoreValue">1,250</strong>
+            </div>
+            <div class="stat-card">
+                <span>อันดับปัจจุบัน</span>
+                <strong id="rankPosition">#42</strong>
+            </div>
+        </section>
+
+        <section class="level-panel">
+            <div class="level-panel-header">
+                <span>เลเวล <strong id="profileLevel">1</strong></span>
+                <span id="profileExp">45 / 100 EXP</span>
+            </div>
+            <div class="level-track">
+                <div class="level-fill" id="levelFill"></div>
+            </div>
+        </section>
+
+        <!-- <section class="profile-content">
+            <div class="profile-card profile-edit">
+                <div class="profile-card-title">ข้อมูลผู้ใช้</div>
+                <div class="profile-row">
+                    <span>ชื่อผู้ใช้</span>
+                    <strong id="profileNameDetail">สมชาย เรขาคณิต</strong>
+                </div>
+            </div>
+        </section> -->
+
+        <section class="achievement-row">
+            <div class="profile-card achievement-section">
+                <div class="section-header">
+                    <h2>ความสำเร็จล่าสุด</h2>
+                </div>
+                <div class="achievement-list" id="achievementList"></div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const profileState = {
+            username: 'นักเรียนGeometry',
+            title: 'MASTER OF LOGIC',
+            rank: 'ผู้เชี่ยวชาญ',
+            score: 1250,
+            rankPosition: 42,
+            level: 1,
+            exp: 45,
+            nextExp: 100,
+            latestAchievements: [
+                { title: 'นักล่าโลหะเวกเตอร์', detail: 'แก้โจทย์ 3 ข้อ ครบ 50 วินาที', value: '+280' },
+                { title: 'ความเร็วแสง', detail: 'ทำคะแนนเต็มภายใน 30 วินาที', value: '+150' },
+                { title: 'ผู้พิชิตระนาบ', detail: 'จบบทเรียนเส้นขนานโดดไม่ผิด', value: '+300' }
+            ]
+        };
+
+        function renderProfile() {
+                document.getElementById('profileName').textContent = profileState.username;
+            document.getElementById('profileTitle').textContent = profileState.title;
+            document.getElementById('profileRank').textContent = profileState.rank;
+            document.getElementById('scoreValue').textContent = profileState.score.toLocaleString();
+            document.getElementById('rankPosition').textContent = `#${profileState.rankPosition}`;
+            document.getElementById('profileExp').textContent = `${profileState.exp} / ${profileState.nextExp} EXP`;
+            document.getElementById('levelFill').style.width = `${Math.min(100, (profileState.exp / profileState.nextExp) * 100)}%`;
+
+            const achievementList = document.getElementById('achievementList');
+            const latestTwo = profileState.latestAchievements.slice(0, 2);
+            achievementList.innerHTML = latestTwo.map(item => `
+                <div class="achievement-item">
+                    <div>
+                        <strong>${item.title}</strong>
+                        <p>${item.detail}</p>
+                    </div>
+                    <span>${item.value}</span>
+                </div>
+            `).join('');
+        }
+
+        renderProfile();
+    </script>
+</body>
+</html>

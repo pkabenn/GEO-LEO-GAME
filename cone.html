@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>ภาคตัดกรวย - Geometry Leo Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="page-shell">
+        <a class="page-back" href="stages.html">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 18l-6-6 6-6"/>
+            </svg>
+            กลับสู่หน้าด่าน
+        </a>
+
+        <h1>ภาคตัดกรวยพื้นฐาน</h1>
+        <p>เริ่มจากการรู้จักรูปวงกลม พาราโบลา และเส้นตรง แล้วเลือกคำตอบให้ถูกเพื่อเก็บคะแนนและ EXP</p>
+
+        <div class="lesson-shell">
+            <div class="lesson-card">
+                <h2>แบบฝึกหัด 1</h2>
+                <p>กราฟของสมการ <strong>y = x² - 4</strong> เป็นรูปกรวยชนิดใด?</p>
+                <div class="answer-grid">
+                    <button class="answer-btn" data-correct="false">วงกลม</button>
+                    <button class="answer-btn" data-correct="false">วงรี</button>
+                    <button class="answer-btn" data-correct="true">พาราโบลา</button>
+                    <button class="answer-btn" data-correct="false">ไฮเพอร์โบลา</button>
+                </div>
+            </div>
+
+            <div class="lesson-status">
+                <p>คะแนนปัจจุบัน: <span id="scoreValue">0</span> คะแนน</p>
+                <p>EXP: <span id="expValue">0</span> / <span id="nextLevelExp">100</span></p>
+                <p>ระดับ: <span id="levelValue">1</span></p>
+                <p id="resultText">ตอบคำถามเพื่อเริ่มสะสมคะแนน</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const lessonState = {
+            score: 0,
+            exp: 0,
+            level: 1,
+            nextLevelExp: 100,
+            passed: false
+        };
+
+        function updateLessonStatus() {
+            document.getElementById('scoreValue').textContent = lessonState.score;
+            document.getElementById('expValue').textContent = lessonState.exp;
+            document.getElementById('nextLevelExp').textContent = lessonState.nextLevelExp;
+            document.getElementById('levelValue').textContent = lessonState.level;
+        }
+
+        function gainExp(amount) {
+            lessonState.exp += amount;
+            while (lessonState.exp >= lessonState.nextLevelExp) {
+                lessonState.exp -= lessonState.nextLevelExp;
+                lessonState.level += 1;
+                lessonState.nextLevelExp = Math.round(lessonState.nextLevelExp * 1.4);
+            }
+        }
+
+        function showResult(correct) {
+            const resultText = document.getElementById('resultText');
+            if (correct) {
+                lessonState.score += 150;
+                gainExp(50);
+                lessonState.passed = true;
+                resultText.textContent = 'ตอบถูก! ผ่านด่านนี้แล้ว รับ 150 คะแนน + 50 EXP';
+                resultText.style.color = '#86efac';
+            } else {
+                lessonState.score = Math.max(0, lessonState.score - 20);
+                gainExp(10);
+                resultText.textContent = 'ตอบผิด ลองใหม่อีกครั้ง รับ 10 EXP';
+                resultText.style.color = '#fca5a5';
+            }
+            updateLessonStatus();
+        }
+
+        document.querySelectorAll('.answer-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const correct = btn.dataset.correct === 'true';
+                showResult(correct);
+            });
+        });
+
+        updateLessonStatus();
+    </script>
+</body>
+</html>
