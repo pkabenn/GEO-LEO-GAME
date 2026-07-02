@@ -6,11 +6,12 @@
 
 html, body {
     min-height: 100vh;
+    height: 100%;
 }
 
 body {
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     justify-content: center;
     font-family: 'Inter', sans-serif;
     background: radial-gradient(circle at top left, rgba(236, 72, 153, 0.25), transparent 25%),
@@ -20,6 +21,11 @@ body {
     color: #f8fafc;
     padding: 20px;
     animation: fadeIn 0.8s ease-out;
+    overflow-x: hidden;
+}
+
+body.stage-body {
+    overflow: hidden;
 }
 
 /* เอฟเฟกต์ตอนโหลดหน้าจอ */
@@ -413,6 +419,8 @@ body {
 
 .page-shell {
     width: min(100%, 840px);
+    max-width: calc(100vw - 40px);
+    min-width: 0;
     border-radius: 32px;
     background: rgba(15, 23, 42, 0.72);
     border: 1px solid rgba(255, 255, 255, 0.12);
@@ -421,6 +429,14 @@ body {
     position: relative;
     padding: 32px 28px 40px;
     margin: 20px auto;
+}
+
+.stage-page {
+    display: flex;
+    flex-direction: column;
+    width: min(100%, 840px);
+    max-height: calc(100vh - 40px);
+    overflow: hidden;
 }
 
 .page-shell h1,
@@ -436,14 +452,33 @@ body {
 .page-shell p {
     color: #cbd5e1;
     line-height: 1.75;
-    margin-bottom: 24px;
+    margin-bottom: 10px;
 }
 
 .page-actions,
 .stage-grid,
+.stage-list,
 .achievement-list {
     display: grid;
     gap: 18px;
+}
+
+.stage-list {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.stage-list::-webkit-scrollbar {
+    width: 10px;
+}
+
+.stage-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
 }
 
 .page-actions {
@@ -460,7 +495,7 @@ body {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.08);
     color: #f8fafc;
-    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .page-actions a:hover,
@@ -476,6 +511,15 @@ body {
     grid-template-columns: 1fr auto;
     gap: 14px;
     align-items: center;
+    padding: 24px 24px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 24px 40px rgba(0, 0, 0, 0.14);
+}
+
+.stage-card:hover {
+    box-shadow: 0 30px 54px rgba(0, 0, 0, 0.2);
 }
 
 .stage-card strong,
@@ -486,8 +530,9 @@ body {
 
 .stage-card .stage-meta,
 .achievement-card .achievement-meta {
-    color: #94a3b8;
-    font-size: 0.95rem;
+    color: #cbd5e1;
+    font-size: 0.96rem;
+    line-height: 1.6;
 }
 
 .stage-card .stage-status,
@@ -495,6 +540,43 @@ body {
     font-size: 0.9rem;
     font-weight: 700;
     color: #f97316;
+    background: rgba(249, 115, 22, 0.1);
+    padding: 10px 14px;
+    border-radius: 999px;
+    min-width: max-content;
+}
+
+.stage-disabled {
+    opacity: 0.68;
+    cursor: not-allowed;
+}
+
+.stage-disabled .stage-status {
+    color: #fbbf24;
+    background: rgba(234, 179, 8, 0.12);
+}
+
+.stage-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+.stage-header h1 {
+    font-size: 2.3rem;
+    margin-bottom: 12px;
+}
+
+.stage-count {
+    align-self: center;
+    color: #f8fafc;
+    background: rgba(248, 113, 113, 0.1);
+    border: 1px solid rgba(249, 115, 22, 0.2);
+    padding: 12px 18px;
+    border-radius: 999px;
+    font-weight: 700;
 }
 
 .page-back {
@@ -530,7 +612,9 @@ body {
 }
 
 .profile-shell {
-    max-width: 980px;
+    width: min(100%, 980px);
+    max-width: calc(100vw - 40px);
+    overflow-x: hidden;
     background: linear-gradient(180deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.9));
     border: 1px solid rgba(248, 113, 25, 0.18);
     box-shadow: 0 40px 120px rgba(0,0,0,0.35);
@@ -538,10 +622,11 @@ body {
 
 .profile-banner {
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: center;
     gap: 24px;
     margin-bottom: 24px;
+    min-width: 0;
 }
 
 .profile-actions {
@@ -583,18 +668,28 @@ body {
 
 .profile-header {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
     gap: 24px;
     margin-bottom: 34px;
     padding-bottom: 12px;
     border-bottom: 1px solid rgba(255,255,255,0.08);
+    min-width: 0;
 }
 
 .profile-avatar {
-    display: grid;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    justify-content: flex-start;
+}
+
+.profile-avatar .profile-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     gap: 8px;
-    justify-items: center;
+    text-align: left;
 }
 
 .avatar-ring {
@@ -619,13 +714,19 @@ body {
 
 .rank-chip {
     border-radius: 999px;
-    padding: 8px 20px;
+    padding: 8px 20px 8px 0;
     background: rgba(31, 41, 55, 0.8);
     border: 1px solid rgba(249, 115, 22, 0.3);
     color: #f8fafc;
     font-size: 0.92rem;
     text-transform: uppercase;
     letter-spacing: 0.04em;
+}
+
+.rank-chip::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
 }
 
 .profile-meta {
@@ -635,9 +736,14 @@ body {
 
 .profile-name {
     margin: 0;
+    padding-left: 20px;
     font-size: 1.15rem;
     font-weight: 700;
-    text-align: center;
+    text-align: left;
+}
+
+.rank-chip {
+    margin: 0;
 }
 
 .profile-header h1 {
@@ -811,6 +917,127 @@ body {
     color: #f8fafc;
 }
 
+.avatar-preview {
+    width: 104px;
+    height: 104px;
+    margin-top: 16px;
+    border-radius: 24px;
+    background: rgba(255,255,255,0.03);
+    border: 1px dashed rgba(255,255,255,0.16);
+    display: grid;
+    place-items: center;
+    color: #cbd5e1;
+    font-size: 0.9rem;
+    background-size: cover;
+    background-position: center;
+}
+
+.avatar-preview.has-image {
+    border-style: solid;
+    border-color: rgba(249,115,22,0.3);
+    color: transparent;
+}
+
+.avatar-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.avatar-option {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 16px;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+    color: #f8fafc;
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.avatar-option:hover,
+.avatar-option.active {
+    transform: translateY(-2px);
+    border-color: rgba(249, 115, 22, 0.4);
+    background: rgba(249, 115, 22, 0.12);
+}
+
+.avatar-option span {
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.avatar-image[data-theme="sunset"] {
+    background: radial-gradient(circle at 30% 30%, #f97316, #7c3aed);
+}
+
+.avatar-image[data-theme="wave"] {
+    background: radial-gradient(circle at 30% 30%, #38bdf8, #6366f1);
+}
+
+.avatar-image[data-theme="emerald"] {
+    background: radial-gradient(circle at 30% 30%, #34d399, #059669);
+}
+
+.avatar-image[data-theme="rose"] {
+    background: radial-gradient(circle at 30% 30%, #ec4899, #fbbf24);
+}
+
+@media (max-width: 860px) {
+    .profile-banner,
+    .profile-header {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        min-width: 0;
+    }
+
+    .profile-avatar {
+        justify-items: start;
+        text-align: left;
+    }
+
+    .profile-actions {
+        justify-content: flex-start;
+        width: 100%;
+    }
+
+    .profile-stats,
+    .achievement-list,
+    .info-cards {
+        grid-template-columns: 1fr;
+        min-width: 0;
+    }
+}
+
+@media (max-width: 640px) {
+    .page-shell,
+    .profile-shell {
+        padding: 20px;
+    }
+
+    .profile-banner,
+    .profile-header {
+        align-items: start;
+    }
+
+    .avatar-ring {
+        width: 120px;
+        height: 120px;
+    }
+
+    .avatar-image {
+        width: 72px;
+        height: 72px;
+    }
+}
+
 .profile-card label {
     color: #94a3b8;
     text-transform: uppercase;
@@ -886,4 +1113,182 @@ body {
 
 .primary-button:hover {
     transform: translateY(-2px);
+}
+
+/* --- สไตล์สำหรับปุ่มแก้ไขรูปโปรไฟล์ --- */
+.avatar-upload-label {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.avatar-edit-button {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 44px;
+    height: 44px;
+    background-color: rgba(15, 23, 42, 0.9);
+    border: 2px solid rgba(249, 115, 22, 0.7);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f8fafc;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+}
+
+.avatar-upload-label:hover .avatar-edit-button {
+    transform: scale(1.08);
+    background-color: #f97316;
+    border-color: #fff;
+}
+
+.avatar-edit-button svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* --- Layout for the leaderboard page to fill viewport --- */
+.leaderboard-page {
+    display: flex;
+    flex-direction: column;
+    /* Use max-height to ensure it fits within the viewport, considering body padding */
+    max-height: calc(100vh - 40px);
+}
+
+/* --- Leaderboard Styles --- */
+.leaderboard-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex-grow: 1; /* Make this container grow to fill the page */
+    min-height: 0; /* Essential for nested flex scrolling */
+}
+
+.leaderboard-header {
+    display: grid;
+    grid-template-columns: 80px 1fr 120px;
+    gap: 16px;
+    padding: 0 24px;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.leaderboard-header span:last-child {
+    text-align: right;
+}
+
+.leaderboard-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-grow: 1; /* Make the list grow to fill the container */
+    min-height: 0; /* Essential for flex item to scroll instead of overflowing parent */
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.leaderboard-item {
+    display: grid;
+    grid-template-columns: 80px 1fr 120px;
+    gap: 16px;
+    align-items: center;
+    padding: 16px 24px;
+    background: rgba(31, 41, 55, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.leaderboard-item:hover {
+    transform: translateY(-2px);
+    background: rgba(31, 41, 55, 0.9);
+}
+
+.leaderboard-list::-webkit-scrollbar {
+    width: 10px;
+}
+
+.leaderboard-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.leaderboard-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+.leaderboard-item.current-user {
+    background: rgba(249, 115, 22, 0.15);
+    border-color: rgba(249, 115, 22, 0.4);
+    box-shadow: 0 0 20px rgba(249, 115, 22, 0.2);
+}
+
+.leaderboard-rank {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #cbd5e1;
+    text-align: center;
+}
+
+.leaderboard-item.current-user .leaderboard-rank {
+    color: #f97316;
+}
+
+.leaderboard-player {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.player-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    background: linear-gradient(135deg, #ec4899, #f97316);
+    color: #fff;
+}
+
+.player-name {
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: #f8fafc;
+}
+
+.leaderboard-points {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #f59e0b;
+    text-align: right;
+}
+
+.current-user-rank-display {
+    padding-top: 16px;
+    margin-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+@media (max-width: 640px) {
+    .leaderboard-header {
+        grid-template-columns: 50px 1fr 100px;
+        padding: 0 12px;
+    }
+    .leaderboard-item {
+        grid-template-columns: 50px 1fr 100px;
+        padding: 12px;
+    }
+    .leaderboard-rank { font-size: 1.2rem; }
+    .player-name { font-size: 0.95rem; }
+    .leaderboard-points { font-size: 0.95rem; }
 }

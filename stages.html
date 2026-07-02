@@ -7,8 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <main class="page-shell">
+<body class="stage-body">
+    <main class="page-shell stage-page">
         <a class="page-back" href="index.html">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M15 18l-6-6 6-6"/>
@@ -16,10 +16,15 @@
             กลับสู่เมนูหลัก
         </a>
 
-        <h1>เลือกด่าน</h1>
-        <p>เลือกด่านที่คุณต้องการฝึกฝน หรือเข้าสู่การเรียนรู้ต่อเนื่อง</p>
+        <div class="stage-header">
+            <div>
+                <h1>เลือกด่าน</h1>
+                <p>เลื่อนลงเพื่อดูด่านอื่น ๆ และเริ่มฝึกทักษะเรขาคณิตของคุณ</p>
+            </div>
+            <span class="stage-count">มีทั้งหมด 8 ด่าน</span>
+        </div>
 
-        <div class="stage-grid">
+        <div class="stage-list">
             <a class="stage-card stage-link" href="cone.html">
                 <div>
                     <strong>ด่าน 1: ภาคตัดกรวยพื้นฐาน</strong>
@@ -38,6 +43,41 @@
                 <div>
                     <strong>ด่าน 3: พีชคณิตเชิงเรขาคณิต</strong>
                     <p class="stage-meta">เปิดประตูสู่สมการและกราฟ</p>
+                </div>
+                <span class="stage-status">รอดำเนินการ</span>
+            </article>
+            <article class="stage-card stage-disabled">
+                <div>
+                    <strong>ด่าน 4: เรขาคณิตเชิงวิเคราะห์</strong>
+                    <p class="stage-meta">สำรวจกราฟและวิเคราะห์รูปร่างในระบบแกน</p>
+                </div>
+                <span class="stage-status">รอดำเนินการ</span>
+            </article>
+            <article class="stage-card stage-disabled">
+                <div>
+                    <strong>ด่าน 5: มุมและเวกเตอร์</strong>
+                    <p class="stage-meta">ฝึกมุมและการเคลื่อนที่เชิงเวกเตอร์</p>
+                </div>
+                <span class="stage-status">รอดำเนินการ</span>
+            </article>
+            <article class="stage-card stage-disabled">
+                <div>
+                    <strong>ด่าน 6: การประยุกต์ตรีโกณมิติ</strong>
+                    <p class="stage-meta">เรียนรู้การใช้งานตรีโกณมิติในโจทย์จริง</p>
+                </div>
+                <span class="stage-status">รอดำเนินการ</span>
+            </article>
+            <article class="stage-card stage-disabled">
+                <div>
+                    <strong>ด่าน 7: โจทย์สมการและกราฟ</strong>
+                    <p class="stage-meta">เชื่อมโยงกราฟกับสมการเชิงเส้นและพาราโบลา</p>
+                </div>
+                <span class="stage-status">รอดำเนินการ</span>
+            </article>
+            <article class="stage-card stage-disabled">
+                <div>
+                    <strong>ด่าน 8: ทบทวนและทดสอบ</strong>
+                    <p class="stage-meta">สรุปความรู้และทดสอบก่อนขึ้นด่านถัดไป</p>
                 </div>
                 <span class="stage-status">รอดำเนินการ</span>
             </article>

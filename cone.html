@@ -33,6 +33,7 @@
 
             <div class="lesson-status">
                 <p>คะแนนปัจจุบัน: <span id="scoreValue">0</span> คะแนน</p>
+                <p>คะแนนรวมทั้งหมด: <span id="totalScoreValue">0</span> คะแนน</p>
                 <p>EXP: <span id="expValue">0</span> / <span id="nextLevelExp">100</span></p>
                 <p>ระดับ: <span id="levelValue">1</span></p>
                 <p id="resultText">ตอบคำถามเพื่อเริ่มสะสมคะแนน</p>
@@ -40,56 +41,7 @@
         </div>
     </main>
 
-    <script>
-        const lessonState = {
-            score: 0,
-            exp: 0,
-            level: 1,
-            nextLevelExp: 100,
-            passed: false
-        };
-
-        function updateLessonStatus() {
-            document.getElementById('scoreValue').textContent = lessonState.score;
-            document.getElementById('expValue').textContent = lessonState.exp;
-            document.getElementById('nextLevelExp').textContent = lessonState.nextLevelExp;
-            document.getElementById('levelValue').textContent = lessonState.level;
-        }
-
-        function gainExp(amount) {
-            lessonState.exp += amount;
-            while (lessonState.exp >= lessonState.nextLevelExp) {
-                lessonState.exp -= lessonState.nextLevelExp;
-                lessonState.level += 1;
-                lessonState.nextLevelExp = Math.round(lessonState.nextLevelExp * 1.4);
-            }
-        }
-
-        function showResult(correct) {
-            const resultText = document.getElementById('resultText');
-            if (correct) {
-                lessonState.score += 150;
-                gainExp(50);
-                lessonState.passed = true;
-                resultText.textContent = 'ตอบถูก! ผ่านด่านนี้แล้ว รับ 150 คะแนน + 50 EXP';
-                resultText.style.color = '#86efac';
-            } else {
-                lessonState.score = Math.max(0, lessonState.score - 20);
-                gainExp(10);
-                resultText.textContent = 'ตอบผิด ลองใหม่อีกครั้ง รับ 10 EXP';
-                resultText.style.color = '#fca5a5';
-            }
-            updateLessonStatus();
-        }
-
-        document.querySelectorAll('.answer-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const correct = btn.dataset.correct === 'true';
-                showResult(correct);
-            });
-        });
-
-        updateLessonStatus();
-    </script>
+    <script src="script.js"></script>
+    <script src="cone.js"></script>
 </body>
 </html>

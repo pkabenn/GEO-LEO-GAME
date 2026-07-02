@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>กระดานผู้นำ - Geometry Leo Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="page-shell profile-shell leaderboard-page">
+        <a class="page-back" href="profile.html">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 18l-6-6 6-6"/>
+            </svg>
+            กลับไปยังโปรไฟล์
+        </a>
+
+        <section class="profile-header">
+            <div>
+                <h1>กระดานผู้นำ</h1>
+                <p>ดูอันดับคะแนนของผู้เล่นทั้งหมดและเปรียบเทียบกับอันดับของคุณ</p>
+            </div>
+        </section>
+
+        <section class="leaderboard-container">
+            <div class="leaderboard-header">
+                <span>อันดับ</span>
+                <span>ผู้เล่น</span>
+                <span>คะแนน</span>
+            </div>
+            <div class="leaderboard-list" id="leaderboardList">
+                <!-- อันดับจะถูกสร้างโดย JavaScript -->
+            </div>
+            <div class="current-user-rank-display" id="currentUserRankDisplay" style="display: none;">
+                <!-- อันดับของผู้เล่นปัจจุบันจะแสดงที่นี่ -->
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script src="leaderboard.js"></script>
+</body>
+</html>
