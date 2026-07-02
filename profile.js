@@ -21,10 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const CURRENT_USER_ID = window.getCurrentUserId(); // Access from global scope
-
-// สร้าง Key สำหรับ localStorage ให้เป็นของผู้ใช้แต่ละคนโดยเฉพาะ
-// ถ้าเป็น guest, CURRENT_USER_ID จะเป็น 'guest' ทำให้ข้อมูลไม่ปนกับผู้ใช้ที่ล็อกอิน
-const USER_STORAGE_KEY = `geometryLeoGameState_${CURRENT_USER_ID}`;
+// Base key for the user's game state. The functions in script.js will add the user ID.
+const USER_GAME_STATE_KEY = 'geometryLeoGameState';
 const PROFILE_FIELD_KEYS = {
     score: 'points',
     streak: 'streakDays',
@@ -70,7 +68,7 @@ function updateDailyStreak(state) {
 }
 
 function saveAvatarTheme(theme) {
-    saveUserValue(`geometryLeoAvatarTheme_${CURRENT_USER_ID}`, theme);
+    window.saveUserValue('geometryLeoAvatarTheme', theme);
 }
 
 function applyAvatarTheme(theme, imageData) {
@@ -89,7 +87,7 @@ function applyAvatarTheme(theme, imageData) {
 }
 
 function renderProfile() {
-    const stored = window.loadJsonStorage(USER_STORAGE_KEY, {}); // Access from global scope
+    const stored = window.loadJsonStorage(USER_GAME_STATE_KEY, {}); // Access from global scope
     if (stored) {
         // Directly update profileState from the single source of truth
         profileState.points = stored.points ?? 0;
@@ -100,13 +98,13 @@ function renderProfile() {
         profileState.lastLogin = stored.lastLogin ?? null; // Ensure lastLogin is correctly loaded
     }
 
-    profileState.avatarImage = window.loadUserValue(`geometryLeoAvatarImage_${CURRENT_USER_ID}`, '');
-    profileState.username = window.loadUserValue(`geometryLeoUsername_${CURRENT_USER_ID}`, 'นักเรียนGeometry');
-    profileState.avatarTheme = window.loadUserValue(`geometryLeoAvatarTheme_${CURRENT_USER_ID}`, 'sunset');
-    profileState.rankPosition = window.loadUserValue(`geometryLeoRankPosition_${CURRENT_USER_ID}`, '--'); // โหลดอันดับล่าสุดจาก Leaderboard
+    profileState.avatarImage = window.loadUserValue('geometryLeoAvatarImage', '');
+    profileState.username = window.loadUserValue('geometryLeoUsername', 'นักเรียนGeometry');
+    profileState.avatarTheme = window.loadUserValue('geometryLeoAvatarTheme', 'sunset');
+    profileState.rankPosition = window.loadUserValue('geometryLeoRankPosition', '--'); // โหลดอันดับล่าสุดจาก Leaderboard
 
     updateDailyStreak(profileState);
-    window.saveJsonStorage(USER_STORAGE_KEY, profileState); // Save the updated state (with streak) // Access from global scope
+    window.saveJsonStorage(USER_GAME_STATE_KEY, profileState); // Save the updated state (with streak) // Access from global scope
 
     document.getElementById('profileName').textContent = profileState.username;
     const profileTitleElement = document.getElementById('profileTitle');
@@ -157,15 +155,14 @@ if (avatarUpload) {
         const reader = new FileReader();
         reader.onload = (e) => {
             const imageDataUrl = e.target.result;
-            const imageKey = `geometryLeoAvatarImage_${CURRENT_USER_ID}`;
 
             // แสดงผลรูปที่เลือกทันทีโดยใช้ฟังก์ชันที่มีอยู่แล้ว
             applyAvatarTheme(profileState.avatarTheme, imageDataUrl);
 
             // บันทึกรูปภาพลงใน localStorage โดยใช้ key ที่ผูกกับ User ID
             if (typeof saveUserValue === 'function') {
-                saveUserValue(imageKey, imageDataUrl);
-            } else { localStorage.setItem(imageKey, imageDataUrl); } // Fallback
+                window.saveUserValue('geometryLeoAvatarImage', imageDataUrl);
+            } else { localStorage.setItem(window.userStorageKey('geometryLeoAvatarImage'), imageDataUrl); } // Fallback
 
             // อัปเดต state ในหน่วยความจำ
             profileState.avatarImage = imageDataUrl;

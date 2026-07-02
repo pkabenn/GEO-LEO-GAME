@@ -41,8 +41,8 @@ onAuthStateChanged(auth, user => { // Use modular onAuthStateChanged
         if (isNewUser) {
             console.log('New user detected. Saving profile info.');
             // บันทึกข้อมูลโปรไฟล์ครั้งแรกโดยใช้ key ที่ผูกกับ User ID
-            window.saveUserValue(`geometryLeoUsername_${user.uid}`, user.displayName || 'นักเรียนGeometry');
-            window.saveUserValue(`geometryLeoAvatarImage_${user.uid}`, user.photoURL || '');
+            window.saveUserValue('geometryLeoUsername', user.displayName || 'นักเรียนGeometry');
+            window.saveUserValue('geometryLeoAvatarImage', user.photoURL || '');
         }
 
         // ถ้าอยู่หน้า login ให้พาไปหน้าหลัก
