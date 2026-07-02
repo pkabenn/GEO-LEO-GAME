@@ -1,3 +1,25 @@
+// This listener will handle the display of login/logout buttons.
+// It's robust because it uses the official Firebase listener, which guarantees
+// it will be called with the current auth state and on any subsequent changes.
+document.addEventListener('DOMContentLoaded', () => {
+    auth.onAuthStateChanged(user => {
+        const loggedInActions = document.getElementById('logged-in-actions');
+        const loggedOutActions = document.getElementById('logged-out-actions');
+
+        if (!loggedInActions || !loggedOutActions) return;
+
+        if (user) {
+            // User is signed in: show settings and logout buttons.
+            loggedInActions.style.display = 'flex';
+            loggedOutActions.style.display = 'none';
+        } else {
+            // User is signed out: show login button.
+            loggedInActions.style.display = 'none';
+            loggedOutActions.style.display = 'block';
+        }
+    });
+});
+
 const CURRENT_USER_ID = getCurrentUserId();
 const USER_STORAGE_KEY = 'geometryLeoGameState';
 const PROFILE_FIELD_KEYS = {
@@ -8,10 +30,10 @@ const PROFILE_FIELD_KEYS = {
 
 const profileState = {
     accountId: CURRENT_USER_ID,
-    username: loadUserValue('geometryLeoUsername', 'นักเรียนGeometry'),
-    avatarTheme: loadUserValue('geometryLeoAvatarTheme', 'sunset'),
-    avatarImage: loadUserValue('geometryLeoAvatarImage', ''),
-    title: 'MASTER OF LOGIC',
+    username: 'นักเรียนGeometry',
+    avatarTheme: 'sunset',
+    avatarImage: '',
+    title: 'MASTER OF LOGIC', // This seems static
     rank: 'ผู้เชี่ยวชาญ',
     points: 0,
     streakDays: 0,
@@ -31,26 +53,14 @@ function todayKey() {
     return new Date().toISOString().split('T')[0];
 }
 
-function loadGameState() {
-    return loadJsonStorage(USER_STORAGE_KEY, null);
-}
-
-function saveGameState(state) {
-    saveJsonStorage(USER_STORAGE_KEY, state);
-}
-
 function updateDailyStreak(state) {
     const today = todayKey();
     if (state.lastLogin === today) return state;
 
-    if (!state.lastLogin) {
-        state.streakDays = 1;
-    } else {
-        const lastDate = new Date(state.lastLogin);
-        const currentDate = new Date(today);
-        const diffDays = Math.round((currentDate - lastDate) / 86400000);
-        state.streakDays = diffDays === 1 ? (state.streakDays || 0) + 1 : 1;
-    }
+    const lastDate = state.lastLogin ? new Date(state.lastLogin) : null;
+    const currentDate = new Date(today);
+    const diffDays = lastDate ? Math.round((currentDate - lastDate) / 86400000) : Infinity;
+    state.streakDays = (diffDays === 1) ? (state.streakDays || 0) + 1 : 1;
 
     state.lastLogin = today;
     return state;
@@ -58,21 +68,6 @@ function updateDailyStreak(state) {
 
 function saveAvatarTheme(theme) {
     saveUserValue('geometryLeoAvatarTheme', theme);
-}
-
-function getProfileUsername() {
-    const value = loadUserValue('geometryLeoUsername', null);
-    return value || localStorage.getItem('geometryLeoUsername') || 'นักเรียนGeometry';
-}
-
-function getProfileAvatarTheme() {
-    const value = loadUserValue('geometryLeoAvatarTheme', null);
-    return value || localStorage.getItem('geometryLeoAvatarTheme') || 'sunset';
-}
-
-function getProfileAvatarImage() {
-    const value = loadUserValue('geometryLeoAvatarImage', null);
-    return value || localStorage.getItem('geometryLeoAvatarImage') || '';
 }
 
 function applyAvatarTheme(theme, imageData) {
@@ -91,24 +86,24 @@ function applyAvatarTheme(theme, imageData) {
 }
 
 function renderProfile() {
-    const stored = loadGameState();
+    const stored = loadJsonStorage(USER_STORAGE_KEY, {});
     if (stored) {
-        profileState.points = stored[PROFILE_FIELD_KEYS.score] ?? stored.score ?? profileState.points;
-        profileState.exp = stored.exp ?? profileState.exp;
-        profileState.nextLevelExp = stored.nextLevelExp ?? profileState.nextLevelExp;
-        profileState.level = stored[PROFILE_FIELD_KEYS.level] ?? stored.level ?? profileState.level;
-        profileState.streakDays = stored[PROFILE_FIELD_KEYS.streak] ?? profileState.streakDays;
-        profileState.lastLogin = stored.lastLogin ?? profileState.lastLogin;
+        // Directly update profileState from the single source of truth
+        profileState.points = stored.points ?? 0;
+        profileState.exp = stored.exp ?? 0;
+        profileState.nextLevelExp = stored.nextLevelExp ?? 100;
+        profileState.level = stored.level ?? 1;
+        profileState.streakDays = stored.streakDays ?? 0;
+        profileState.lastLogin = stored.lastLogin ?? null;
     }
 
-    profileState.avatarImage = getProfileAvatarImage();
-    profileState.username = getProfileUsername();
-    profileState.avatarTheme = getProfileAvatarTheme();
+    profileState.avatarImage = loadUserValue('geometryLeoAvatarImage', '');
+    profileState.username = loadUserValue('geometryLeoUsername', 'นักเรียนGeometry');
+    profileState.avatarTheme = loadUserValue('geometryLeoAvatarTheme', 'sunset');
     profileState.rankPosition = loadUserValue('geometryLeoRankPosition', '--'); // โหลดอันดับล่าสุดจาก Leaderboard
 
     updateDailyStreak(profileState);
-    saveGameState(profileState);
-    saveAvatarTheme(profileState.avatarTheme);
+    saveJsonStorage(USER_STORAGE_KEY, profileState); // Save the updated state (with streak)
 
     document.getElementById('profileName').textContent = profileState.username;
     const profileTitleElement = document.getElementById('profileTitle');
@@ -167,12 +162,20 @@ if (avatarUpload) {
             // บันทึกรูปภาพลงใน localStorage โดยใช้ key ที่ถูกต้อง
             if (typeof saveUserValue === 'function') {
                 saveUserValue(imageKey, imageDataUrl);
-            }
-            localStorage.setItem(imageKey, imageDataUrl); // เพื่อความเข้ากันได้แบบเดียวกับใน settings.js
+            } else { localStorage.setItem(imageKey, imageDataUrl); } // Fallback
 
             // อัปเดต state ในหน่วยความจำ
             profileState.avatarImage = imageDataUrl;
         };
         reader.readAsDataURL(file);
+    });
+}
+
+const logoutButton = document.getElementById('logout-button');
+if (logoutButton) {
+    logoutButton.addEventListener('click', () => {
+        if (confirm('คุณต้องการออกจากระบบใช่หรือไม่?')) {
+            signOutUser();
+        }
     });
 }

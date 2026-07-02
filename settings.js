@@ -10,9 +10,6 @@ if (saveSettings) {
         const username = usernameInput.value.trim() || 'นักเรียนGeometry';
         saveUserValue('geometryLeoUsername', username);
 
-        // Fallback for profile page and legacy access
-        localStorage.setItem('geometryLeoUsername', username);
-
         alert('บันทึกเรียบร้อยแล้ว');
     });
 }

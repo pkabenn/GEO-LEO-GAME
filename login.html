@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>ลงชื่อเข้าใช้ - Geometry Leo Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .login-container {
+            text-align: center;
+            padding: 40px;
+        }
+        .login-container h1 {
+            margin-bottom: 16px;
+        }
+        .login-container p {
+            max-width: 450px;
+            margin: 0 auto 32px;
+        }
+        .provider-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            align-items: center;
+        }
+        .provider-btn {
+            width: 100%;
+            max-width: 320px;
+        }
+    </style>
+</head>
+<body>
+    <main class="page-shell">
+        <div class="login-container">
+            <h1>ยินดีต้อนรับ</h1>
+            <p>ลงชื่อเข้าใช้เพื่อบันทึกความคืบหน้า, คะแนน และแข่งขันบนกระดานผู้นำกับเพื่อนๆ</p>
+            <div class="provider-buttons">
+                <button id="google-signin" class="primary-button provider-btn">ลงชื่อเข้าใช้ด้วย Google</button>
+                <button id="facebook-signin" class="primary-button provider-btn">ลงชื่อเข้าใช้ด้วย Facebook</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+    <!-- App Scripts -->
+    <script src="script.js"></script>
+    <script src="auth.js"></script>
+    <script src="login.js"></script>
+</body>
+</html>

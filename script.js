@@ -1,7 +1,4 @@
-﻿let currentUserId = localStorage.getItem('geometryLeoCurrentUser') || 'guest';
-if (!localStorage.getItem('geometryLeoCurrentUser')) {
-    localStorage.setItem('geometryLeoCurrentUser', currentUserId);
-}
+﻿﻿let currentUserId = 'guest'; // Start as guest, auth.js will update this.
 
 function getCurrentUserId() {
     return currentUserId;

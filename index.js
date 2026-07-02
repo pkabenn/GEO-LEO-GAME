@@ -1,6 +1,6 @@
 const STORAGE_KEY = 'geometryLeoGameState';
 const defaultLearningState = {
-    points: 0,
+    points: 0, // This default is fine, as it will be overwritten
     exp: 0,
     level: 1,
     nextLevelExp: 100,
@@ -18,27 +18,19 @@ function todayKey() {
 }
 
 function loadLearningState() {
-    const stored = loadJsonStorage(STORAGE_KEY, null);
-    return stored ? { ...defaultLearningState, ...stored } : { ...defaultLearningState };
-}
-
-function saveLearningState(state) {
-    saveJsonStorage(STORAGE_KEY, state);
+    // Just load the state, don't merge with defaults here. Let the source of truth be the stored object.
+    return loadJsonStorage(STORAGE_KEY, defaultLearningState);
 }
 
 function updateDailyStreak(state) {
     const today = todayKey();
     if (state.lastLogin === today) return state;
 
-    if (!state.lastLogin) {
-        state.streakDays = 1;
-    } else {
-        const lastDate = new Date(state.lastLogin);
-        const currentDate = new Date(today);
-        const diffDays = Math.round((currentDate - lastDate) / 86400000);
-        state.streakDays = diffDays === 1 ? (state.streakDays || 0) + 1 : 1;
-    }
-
+    const lastDate = state.lastLogin ? new Date(state.lastLogin) : null;
+    const currentDate = new Date(today);
+    const diffDays = lastDate ? Math.round((currentDate - lastDate) / 86400000) : Infinity;
+    
+    state.streakDays = (diffDays === 1) ? (state.streakDays || 0) + 1 : 1;
     state.lastLogin = today;
     return state;
 }
@@ -77,7 +69,7 @@ function continueLearning(event) {
 document.addEventListener('DOMContentLoaded', () => {
     const state = loadLearningState();
     updateDailyStreak(state);
-    saveLearningState(state);
+    saveJsonStorage(STORAGE_KEY, state); // Save back the updated streak info
     renderLearningState(state);
 
     const startButton = document.querySelector('.start-button');
