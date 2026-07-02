@@ -1,4 +1,7 @@
-const STORAGE_KEY = 'geometryLeoGameState';
+// ดึง User ID ปัจจุบัน (อาจจะเป็น 'guest' หรือ UID จาก Firebase)
+const CURRENT_USER_ID = window.getCurrentUserId ? window.getCurrentUserId() : 'guest';
+// สร้าง Key สำหรับ state ของเกมให้ผูกกับผู้ใช้แต่ละคน
+const STORAGE_KEY = `geometryLeoGameState_${CURRENT_USER_ID}`;
 const defaultLearningState = {
     points: 0, // This default is fine, as it will be overwritten
     exp: 0,
@@ -19,7 +22,7 @@ function todayKey() {
 
 function loadLearningState() {
     // Just load the state, don't merge with defaults here. Let the source of truth be the stored object.
-    return loadJsonStorage(STORAGE_KEY, defaultLearningState);
+    return window.loadJsonStorage(STORAGE_KEY, defaultLearningState); // Access from global scope
 }
 
 function updateDailyStreak(state) {
@@ -69,7 +72,7 @@ function continueLearning(event) {
 document.addEventListener('DOMContentLoaded', () => {
     const state = loadLearningState();
     updateDailyStreak(state);
-    saveJsonStorage(STORAGE_KEY, state); // Save back the updated streak info
+    window.saveJsonStorage(STORAGE_KEY, state); // Save back the updated streak info // Access from global scope
     renderLearningState(state);
 
     const startButton = document.querySelector('.start-button');

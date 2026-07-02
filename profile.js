@@ -2,7 +2,7 @@
 // It's robust because it uses the official Firebase listener, which guarantees
 // it will be called with the current auth state and on any subsequent changes.
 document.addEventListener('DOMContentLoaded', () => {
-    auth.onAuthStateChanged(user => {
+    window.auth.onAuthStateChanged(user => { // Access auth from global scope
         const loggedInActions = document.getElementById('logged-in-actions');
         const loggedOutActions = document.getElementById('logged-out-actions');
 
@@ -20,8 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-const CURRENT_USER_ID = getCurrentUserId();
-const USER_STORAGE_KEY = 'geometryLeoGameState';
+const CURRENT_USER_ID = window.getCurrentUserId(); // Access from global scope
+
+// สร้าง Key สำหรับ localStorage ให้เป็นของผู้ใช้แต่ละคนโดยเฉพาะ
+// ถ้าเป็น guest, CURRENT_USER_ID จะเป็น 'guest' ทำให้ข้อมูลไม่ปนกับผู้ใช้ที่ล็อกอิน
+const USER_STORAGE_KEY = `geometryLeoGameState_${CURRENT_USER_ID}`;
 const PROFILE_FIELD_KEYS = {
     score: 'points',
     streak: 'streakDays',
@@ -67,7 +70,7 @@ function updateDailyStreak(state) {
 }
 
 function saveAvatarTheme(theme) {
-    saveUserValue('geometryLeoAvatarTheme', theme);
+    saveUserValue(`geometryLeoAvatarTheme_${CURRENT_USER_ID}`, theme);
 }
 
 function applyAvatarTheme(theme, imageData) {
@@ -86,7 +89,7 @@ function applyAvatarTheme(theme, imageData) {
 }
 
 function renderProfile() {
-    const stored = loadJsonStorage(USER_STORAGE_KEY, {});
+    const stored = window.loadJsonStorage(USER_STORAGE_KEY, {}); // Access from global scope
     if (stored) {
         // Directly update profileState from the single source of truth
         profileState.points = stored.points ?? 0;
@@ -94,16 +97,16 @@ function renderProfile() {
         profileState.nextLevelExp = stored.nextLevelExp ?? 100;
         profileState.level = stored.level ?? 1;
         profileState.streakDays = stored.streakDays ?? 0;
-        profileState.lastLogin = stored.lastLogin ?? null;
+        profileState.lastLogin = stored.lastLogin ?? null; // Ensure lastLogin is correctly loaded
     }
 
-    profileState.avatarImage = loadUserValue('geometryLeoAvatarImage', '');
-    profileState.username = loadUserValue('geometryLeoUsername', 'นักเรียนGeometry');
-    profileState.avatarTheme = loadUserValue('geometryLeoAvatarTheme', 'sunset');
-    profileState.rankPosition = loadUserValue('geometryLeoRankPosition', '--'); // โหลดอันดับล่าสุดจาก Leaderboard
+    profileState.avatarImage = window.loadUserValue(`geometryLeoAvatarImage_${CURRENT_USER_ID}`, '');
+    profileState.username = window.loadUserValue(`geometryLeoUsername_${CURRENT_USER_ID}`, 'นักเรียนGeometry');
+    profileState.avatarTheme = window.loadUserValue(`geometryLeoAvatarTheme_${CURRENT_USER_ID}`, 'sunset');
+    profileState.rankPosition = window.loadUserValue(`geometryLeoRankPosition_${CURRENT_USER_ID}`, '--'); // โหลดอันดับล่าสุดจาก Leaderboard
 
     updateDailyStreak(profileState);
-    saveJsonStorage(USER_STORAGE_KEY, profileState); // Save the updated state (with streak)
+    window.saveJsonStorage(USER_STORAGE_KEY, profileState); // Save the updated state (with streak) // Access from global scope
 
     document.getElementById('profileName').textContent = profileState.username;
     const profileTitleElement = document.getElementById('profileTitle');
@@ -154,12 +157,12 @@ if (avatarUpload) {
         const reader = new FileReader();
         reader.onload = (e) => {
             const imageDataUrl = e.target.result;
-            const imageKey = 'geometryLeoAvatarImage';
+            const imageKey = `geometryLeoAvatarImage_${CURRENT_USER_ID}`;
 
             // แสดงผลรูปที่เลือกทันทีโดยใช้ฟังก์ชันที่มีอยู่แล้ว
             applyAvatarTheme(profileState.avatarTheme, imageDataUrl);
 
-            // บันทึกรูปภาพลงใน localStorage โดยใช้ key ที่ถูกต้อง
+            // บันทึกรูปภาพลงใน localStorage โดยใช้ key ที่ผูกกับ User ID
             if (typeof saveUserValue === 'function') {
                 saveUserValue(imageKey, imageDataUrl);
             } else { localStorage.setItem(imageKey, imageDataUrl); } // Fallback
@@ -175,7 +178,7 @@ const logoutButton = document.getElementById('logout-button');
 if (logoutButton) {
     logoutButton.addEventListener('click', () => {
         if (confirm('คุณต้องการออกจากระบบใช่หรือไม่?')) {
-            signOutUser();
+            window.signOutUser(); // Access from global scope
         }
     });
 }

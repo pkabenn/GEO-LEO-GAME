@@ -1,6 +1,6 @@
 const STORAGE_KEY = 'geometryLeoGameState';
 
-let gameState = loadJsonStorage(STORAGE_KEY, {
+let gameState = window.loadJsonStorage(STORAGE_KEY, { // Access from global scope
     points: 0, exp: 0, level: 1, nextLevelExp: 100
 });
 
@@ -41,7 +41,7 @@ function showResult(correct) {
         resultText.style.color = '#fca5a5';
     }
 
-    saveJsonStorage(STORAGE_KEY, gameState);
+    window.saveJsonStorage(STORAGE_KEY, gameState); // Access from global scope
     updateLessonStatus();
 }
 

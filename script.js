@@ -39,3 +39,13 @@ function loadJsonStorage(key, fallback = null) {
 function saveJsonStorage(key, value) {
     localStorage.setItem(userStorageKey(key), JSON.stringify(value));
 }
+
+// Expose utility functions globally for modules to access
+window.getCurrentUserId = getCurrentUserId;
+window.setCurrentUserId = setCurrentUserId;
+window.loginUser = loginUser;
+window.userStorageKey = userStorageKey;
+window.loadUserValue = loadUserValue;
+window.saveUserValue = saveUserValue;
+window.loadJsonStorage = loadJsonStorage;
+window.saveJsonStorage = saveJsonStorage;

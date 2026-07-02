@@ -1305,3 +1305,181 @@ body.stage-body {
     .player-name { font-size: 0.95rem; }
     .leaderboard-points { font-size: 0.95rem; }
 }
+
+/* --- สไตล์สำหรับปุ่มแก้ไขรูปโปรไฟล์ --- */
+.avatar-upload-label {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.avatar-edit-button {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 44px;
+    height: 44px;
+    background-color: rgba(15, 23, 42, 0.9);
+    border: 2px solid rgba(249, 115, 22, 0.7);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f8fafc;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+}
+
+.avatar-upload-label:hover .avatar-edit-button {
+    transform: scale(1.08);
+    background-color: #f97316;
+    border-color: #fff;
+}
+
+.avatar-edit-button svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* --- Layout for the leaderboard page to fill viewport --- */
+.leaderboard-page {
+    display: flex;
+    flex-direction: column;
+    /* Use max-height to ensure it fits within the viewport, considering body padding */
+    max-height: calc(100vh - 40px);
+}
+
+/* --- Leaderboard Styles --- */
+.leaderboard-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex-grow: 1; /* Make this container grow to fill the page */
+    min-height: 0; /* Essential for nested flex scrolling */
+}
+
+.leaderboard-header {
+    display: grid;
+    grid-template-columns: 80px 1fr 120px;
+    gap: 16px;
+    padding: 0 24px;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.leaderboard-header span:last-child {
+    text-align: right;
+}
+
+.leaderboard-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-grow: 1; /* Make the list grow to fill the container */
+    min-height: 0; /* Essential for flex item to scroll instead of overflowing parent */
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.leaderboard-item {
+    display: grid;
+    grid-template-columns: 80px 1fr 120px;
+    gap: 16px;
+    align-items: center;
+    padding: 16px 24px;
+    background: rgba(31, 41, 55, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.leaderboard-item:hover {
+    transform: translateY(-2px);
+    background: rgba(31, 41, 55, 0.9);
+}
+
+.leaderboard-list::-webkit-scrollbar {
+    width: 10px;
+}
+
+.leaderboard-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.leaderboard-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+.leaderboard-item.current-user {
+    background: rgba(249, 115, 22, 0.15);
+    border-color: rgba(249, 115, 22, 0.4);
+    box-shadow: 0 0 20px rgba(249, 115, 22, 0.2);
+}
+
+.leaderboard-rank {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #cbd5e1;
+    text-align: center;
+}
+
+.leaderboard-item.current-user .leaderboard-rank {
+    color: #f97316;
+}
+
+.leaderboard-player {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.player-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    background: linear-gradient(135deg, #ec4899, #f97316);
+    color: #fff;
+}
+
+.player-name {
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: #f8fafc;
+}
+
+.leaderboard-points {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #f59e0b;
+    text-align: right;
+}
+
+.current-user-rank-display {
+    padding-top: 16px;
+    margin-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+@media (max-width: 640px) {
+    .leaderboard-header {
+        grid-template-columns: 50px 1fr 100px;
+        padding: 0 12px;
+    }
+    .leaderboard-item {
+        grid-template-columns: 50px 1fr 100px;
+        padding: 12px;
+    }
+    .leaderboard-rank { font-size: 1.2rem; }
+    .player-name { font-size: 0.95rem; }
+    .leaderboard-points { font-size: 0.95rem; }
+}
